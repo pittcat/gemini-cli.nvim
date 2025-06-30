@@ -70,30 +70,6 @@ function M.check()
   else
     health.info("No system clipboard support (optional)")
   end
-
-  -- Catppuccin plugin check
-  local has_catppuccin = pcall(require, "catppuccin")
-  if has_catppuccin then
-    health.ok("catppuccin plugin found (optional theme integration)")
-  else
-    health.info("catppuccin plugin not found (optional)")
-  end
-
-  -- nvim-tree plugin check
-  local has_nvim_tree = pcall(require, "nvim-tree")
-  if has_nvim_tree then
-    health.ok("nvim-tree plugin found (optional integration)")
-  else
-    health.info("nvim-tree plugin not found (optional)")
-  end
-
-  -- neo-tree plugin check
-  local has_neo_tree = pcall(require, "neo-tree")
-  if has_neo_tree then
-    health.ok("neo-tree plugin found (optional integration)")
-  else
-    health.info("neo-tree plugin not found (optional)")
-  end
 end
 
 return M

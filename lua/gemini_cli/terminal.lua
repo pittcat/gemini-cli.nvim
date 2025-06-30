@@ -2,18 +2,11 @@ local M = {}
 
 local config = require("gemini_cli.config")
 
----@param opts nvim_aider.Config
+---@param opts gemini_cli.Config
 ---@return string
 local function create_cmd(opts)
   local cmd = { opts.gemini_cmd }
   vim.list_extend(cmd, opts.args or {})
-
-  if opts.theme then
-    for key, value in pairs(opts.theme) do
-      table.insert(cmd, "--" .. key:gsub("_", "-") .. "=" .. tostring(value))
-    end
-  end
-
   return table.concat(cmd, " ")
 end
 

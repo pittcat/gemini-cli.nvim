@@ -11,8 +11,6 @@
 ## 🌟 Features
 
 - [x] 🖥️ GeminiCLI terminal integration within Neovim
-- [x] 🎨 Color theme configuration support with auto Catppuccin flavor synchronization
-      if available
 - [x] 📤 Quick commands to add current buffer files (using `@` syntax)
 - [x] 📤 Send buffers or selections to GeminiCLI
 - [ ] ♻️ Reset command to clear session (not directly supported by Gemini CLI)
@@ -61,15 +59,14 @@ Using lazy.nvim:
 ```lua
 {
     "marcinjahn/gemini-cli.nvim",
-    cmd = "GeminiCLI",
+    cmd = "Gemini",
     -- Example key mappings for common actions:
     keys = {
-      { "<leader>a/", "<cmd>GeminiCLI toggle<cr>", desc = "Toggle GeminiCLI" },
-      { "<leader>as", "<cmd>GeminiCLI send<cr>", desc = "Send to GeminiCLI", mode = { "n", "v" } },
-      { "<leader>ac", "<cmd>GeminiCLI command<cr>", desc = "GeminiCLI Commands" },
-      { "<leader>ab", "<cmd>GeminiCLI buffer<cr>", desc = "Send Buffer" },
-      { "<leader>a+", "<cmd>GeminiCLI add_file<cr>", desc = "Add File" },
-      -- Example nvim-tree.lua integration if needed
+      { "<leader>a/", "<cmd>Gemini toggle<cr>", desc = "Toggle Gemini CLI" },
+      { "<leader>as", "<cmd>Gemini send<cr>", desc = "Send to Gemini CLI", mode = { "n", "v" } },
+      { "<leader>ac", "<cmd>Gemini command<cr>", desc = "Gemini CLI Commands" },
+      { "<leader>ab", "<cmd>Gemini buffer<cr>", desc = "Send Buffer" },
+      { "<leader>a+", "<cmd>Gemini add_file<cr>", desc = "Add File" },
 
     },
     dependencies = {
@@ -101,18 +98,6 @@ require("gemini_cli").setup({
   },
   -- Automatically reload buffers changed by GeminiCLI (requires vim.o.autoread = true)
   auto_reload = false,
-  -- Theme colors (automatically uses Catppuccin flavor if available)
-  theme = {
-    user_input_color = "#a6da95",
-    tool_output_color = "#8aadf4",
-    tool_error_color = "#ed8796",
-    tool_warning_color = "#eed49f",
-    assistant_output_color = "#c6a0f6",
-    completion_menu_color = "#cad3f5",
-    completion_menu_bg_color = "#24273a",
-    completion_menu_current_color = "#181926",
-    completion_menu_current_bg_color = "#f4dbd6",
-  },
   -- snacks.picker.layout.Config configuration
   picker_cfg = {
     preset = "vscode",
