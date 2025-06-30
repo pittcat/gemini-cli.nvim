@@ -16,18 +16,17 @@ require("lazy.minit").setup({
     { dir = vim.uv.cwd() },
     "LazyVim/starter",
     {
-      "GeorgesAlkhouri/nvim-aider",
+      "GeorgesAlkhouri/nvim-gemini-cli",
       cmd = {
-        "AiderTerminalToggle",
-        "AiderHealth",
+        "GeminiTerminalToggle",
+        "GeminiHealth",
       },
       keys = {
-        { "<leader>a/", "<cmd>AiderTerminalToggle<cr>", desc = "Open Aider" },
-        { "<leader>as", "<cmd>AiderTerminalSend<cr>", desc = "Send to Aider", mode = { "n", "v" } },
-        { "<leader>ac", "<cmd>AiderQuickSendCommand<cr>", desc = "Send Command To Aider" },
-        { "<leader>ab", "<cmd>AiderQuickSendBuffer<cr>", desc = "Send Buffer To Aider" },
-        { "<leader>a+", "<cmd>AiderQuickAddFile<cr>", desc = "Add File to Aider" },
-        { "<leader>a-", "<cmd>AiderQuickDropFile<cr>", desc = "Drop File from Aider" },
+        { "<leader>a/", "<cmd>GeminiCLI toggle<cr>", desc = "Open GeminiCLI" },
+        { "<leader>as", "<cmd>GeminiCLI send<cr>", desc = "Send to GeminiCLI", mode = { "n", "v" } },
+        { "<leader>ac", "<cmd>GeminiCLI command<cr>", desc = "Send Command To GeminiCLI" },
+        { "<leader>ab", "<cmd>GeminiCLI buffer<cr>", desc = "Send Buffer To GeminiCLI" },
+        { "<leader>a+", "<cmd>GeminiCLI add_file<cr>", desc = "Add File to GeminiCLI" },
       },
       dependencies = {
         "folke/snacks.nvim",
@@ -37,7 +36,7 @@ require("lazy.minit").setup({
         {
           "nvim-neo-tree/neo-tree.nvim",
           opts = function(_, opts)
-            require("nvim_aider.neo_tree").setup(opts)
+            require("gemini_cli.neo_tree").setup(opts)
           end,
         },
       },

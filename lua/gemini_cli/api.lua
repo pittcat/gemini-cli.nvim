@@ -1,22 +1,24 @@
 local M = {}
-local commands = require("nvim_aider.commands_slash")
-local diagnostics = require("nvim_aider.diagnostics")
-local picker = require("nvim_aider.picker")
-local terminal = require("nvim_aider.terminal")
-local utils = require("nvim_aider.utils")
+local commands = require("gemini_cli.commands_slash")
+local diagnostics = require("gemini_cli.diagnostics")
+local picker = require("gemini_cli.picker")
+local terminal = require("gemini_cli.terminal")
+local utils = require("gemini_cli.utils")
 
 ---Run health check
 function M.health_check()
-  vim.cmd([[checkhealth nvim_aider]])
+  vim.cmd([[
+checkhealth gemini_cli
+]])
 end
 
----Toggle aider terminal
+---Toggle gemini terminal
 ---@param opts? table Optional configuration override
 function M.toggle_terminal(opts)
   terminal.toggle(opts or {})
 end
 
----Send text to aider terminal
+---Send text to gemini terminal
 ---@param text? string Optional text to send (nil for visual selection/mode-based handling)
 ---@param opts? table Optional configuration override
 function M.send_to_terminal(text, opts)
@@ -38,7 +40,7 @@ function M.send_to_terminal(text, opts)
   else
     -- Normal mode handling
     if selected_text == "" then
-      vim.ui.input({ prompt = "Send to Aider: " }, function(input)
+      vim.ui.input({ prompt = "Send to Gemini: " }, function(input)
         if input then
           terminal.send(input, opts or {})
         end
@@ -49,8 +51,8 @@ function M.send_to_terminal(text, opts)
   end
 end
 
----Send command to aider terminal
----@param command string Aider command to execute
+---Send command to gemini terminal
+---@param command string Gemini command to execute
 ---@param input? string Additional input for the command
 ---@param opts? table Optional configuration override
 function M.send_command(command, input, opts)
@@ -101,18 +103,18 @@ function M.send_diagnostics_with_prompt(opts)
   end)
 end
 
----Add specific file to session
+---Add specific file to session using @<filepath>
 ---@param filepath string Path to file to add
 ---@param opts? table Optional configuration override
 function M.add_file(filepath, opts)
   if filepath then
-    terminal.command(commands.add.value, filepath, opts or {})
+    terminal.send("@" .. filepath, opts or {})
   else
     vim.notify("No file path provided", vim.log.levels.ERROR)
   end
 end
 
----Add current file to session
+---Add current file to session using @<filepath>
 ---@param opts? table Optional configuration override
 function M.add_current_file(opts)
   local filepath = utils.get_absolute_path()
@@ -123,44 +125,6 @@ function M.add_current_file(opts)
   end
 end
 
----Remove specific file from session
----@param filepath string Path to file to remove
----@param opts? table Optional configuration override
-function M.drop_file(filepath, opts)
-  if filepath then
-    terminal.command(commands.drop.value, filepath, opts or {})
-  else
-    vim.notify("No file path provided", vim.log.levels.ERROR)
-  end
-end
-
----Remove current file from session
----@param opts? table Optional configuration override
-function M.drop_current_file(opts)
-  local filepath = utils.get_absolute_path()
-  if filepath then
-    M.drop_file(filepath, opts)
-  else
-    vim.notify("No valid file in current buffer", vim.log.levels.INFO)
-  end
-end
-
----Add current file as read-only
----@param opts? table Optional configuration override
-function M.add_read_only_file(opts)
-  local filepath = utils.get_absolute_path()
-  if filepath then
-    terminal.command(commands["read-only"].value, filepath, opts)
-  else
-    vim.notify("No valid file in current buffer", vim.log.levels.INFO)
-  end
-end
-
----Reset the Aider session (drop all files and clear history)
----@param opts? table Optional configuration override
-function M.reset_session(opts)
-  terminal.command(commands.reset.value, nil, opts or {})
-end
 
 ---Open command picker
 ---@param opts? table Optional configuration override

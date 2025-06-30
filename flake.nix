@@ -47,7 +47,7 @@
         in
         {
           devenv.shells.default = {
-            name = "nvim-aider";
+            name = "nvim-gemini-cli";
 
             languages.python.enable = true;
             languages.python.package = python';
@@ -59,7 +59,7 @@
             };
 
             languages.python.venv.requirements = ''
-              aider-chat
+              gemini-cli-chat
             '';
 
             dotenv.enable = true;

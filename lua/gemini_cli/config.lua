@@ -1,34 +1,29 @@
----@alias nvim_aider.Color string
+---@alias gemini_cli.Color string
 
----@class nvim_aider.Theme: table<string, nvim_aider.Color>
----@field user_input_color nvim_aider.Color
----@field tool_output_color nvim_aider.Color
----@field tool_error_color nvim_aider.Color
----@field tool_warning_color nvim_aider.Color
----@field assistant_output_color nvim_aider.Color
----@field completion_menu_color nvim_aider.Color
----@field completion_menu_bg_color nvim_aider.Color
----@field completion_menu_current_color nvim_aider.Color
----@field completion_menu_current_bg_color nvim_aider.Color
+---@class gemini_cli.Theme: table<string, gemini_cli.Color>
+---@field user_input_color gemini_cli.Color
+---@field tool_output_color gemini_cli.Color
+---@field tool_error_color gemini_cli.Color
+---@field tool_warning_color gemini_cli.Color
+---@field assistant_output_color gemini_cli.Color
+---@field completion_menu_color gemini_cli.Color
+---@field completion_menu_bg_color gemini_cli.Color
+---@field completion_menu_current_color gemini_cli.Color
+---@field completion_menu_current_bg_color gemini_cli.Color
 
----@class nvim_aider.Config: snacks.terminal.Opts
----@field auto_reload? boolean Automatically reload buffers changed by Aider (requires vim.o.autoread = true)
----@field aider_cmd? string
+---@class gemini_cli.Config: snacks.terminal.Opts
+---@field auto_reload? boolean Automatically reload buffers changed by GeminiCLI (requires vim.o.autoread = true)
+---@field gemini_cmd? string
 ---@field args? string[]
----@field theme? nvim_aider.Theme
+---@field theme? gemini_cli.Theme
 ---@field win? snacks.win.Config
 ---@field picker_cfg? snacks.picker.layout.Config
 local M = {}
 
 M.defaults = {
   auto_reload = false,
-  aider_cmd = "aider",
-  args = {
-    "--no-auto-commits",
-    "--pretty",
-    "--stream",
-    "--watch-files",
-  },
+  gemini_cmd = "gemini-cli",
+  args = {},
   config = {
     os = { editPreset = "nvim-remote" },
     gui = { nerdFontsVersion = "3" },
@@ -45,8 +40,8 @@ M.defaults = {
     completion_menu_current_bg_color = "#f4dbd6",
   },
   win = {
-    wo = { winbar = "Aider" },
-    style = "nvim_aider",
+    wo = { winbar = "GeminiCLI" },
+    style = "gemini_cli",
     position = "right",
   },
   picker_cfg = {
@@ -54,7 +49,7 @@ M.defaults = {
   },
 }
 
----@type nvim_aider.Config
+---@type gemini_cli.Config
 M.options = vim.deepcopy(M.defaults)
 
 ---@param colors table
@@ -72,7 +67,7 @@ local function set_catppuccin_colors(colors)
   }
 end
 
----@param opts? nvim_aider.Config
+---@param opts? gemini_cli.Config
 function M.setup(opts)
   local ok, _ = pcall(require, "catppuccin.palettes")
   if ok then
@@ -85,7 +80,7 @@ function M.setup(opts)
     end
     -- Store opts in closure for autocmd to access
     local user_opts = opts
-    -- NOTE: the new colors are only applied when aider is restarted
+    -- NOTE: the new colors are only applied when gemini-cli is restarted
     vim.api.nvim_create_autocmd("ColorScheme", {
       callback = function(args)
         if args.match:match("^catppuccin") then
@@ -99,7 +94,7 @@ function M.setup(opts)
   end
 
   M.options = vim.tbl_deep_extend("force", M.options, opts or {})
-  Snacks.config.style("nvim_aider", {})
+  Snacks.config.style("gemini_cli", {})
   return M.options
 end
 

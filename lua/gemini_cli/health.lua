@@ -3,9 +3,9 @@ local health = vim.health or require("health")
 
 function M.check()
   health.start("Plugin Dependencies")
-  local options = require("nvim_aider.config").options
-  -- Check aider is executable
-  local version_output = vim.fn.systemlist(options.aider_cmd .. " --version")
+  local options = require("gemini_cli.config").options
+  -- Check gemini-cli is executable
+  local version_output = vim.fn.systemlist(options.gemini_cmd .. " --version")
   if version_output and vim.v.shell_error == 0 then
     local version_str = version_output[#version_output]
     -- Handle potential ANSI codes in version string
@@ -13,12 +13,12 @@ function M.check()
     -- Try parsing version (might fail if format is unexpected)
     local ok, version = pcall(vim.version.parse, version_str)
     if ok and version then
-      health.ok(string.format("aider v%d.%d.%d found", version.major, version.minor, version.patch))
+      health.ok(string.format("gemini-cli v%d.%d.%d found", version.major, version.minor, version.patch))
     else
-      health.warn("Could not parse aider version from output: " .. version_str)
+      health.warn("Could not parse gemini-cli version from output: " .. version_str)
     end
   else
-    health.error("Could not determine aider version for '" .. options.aider_cmd .. "'.")
+    health.error("Could not determine gemini-cli version for '" .. options.gemini_cmd .. "'.")
   end
 
   -- Snacks plugin check
@@ -37,9 +37,9 @@ function M.check()
   if options.auto_reload then
     if not vim.o.autoread then
       health.warn("auto_reload enabled, but 'autoread' is off.", {
-        "nvim-aider's auto_reload requires Neovim's 'autoread' option.",
+        "gemini-cli's auto_reload requires Neovim's 'autoread' option.",
         "Run ':set autoread' or add 'vim.o.autoread = true' to your config.",
-        "Alternatively, disable auto_reload: require('nvim_aider').setup({ auto_reload = false })",
+        "Alternatively, disable auto_reload: require('gemini_cli').setup({ auto_reload = false })",
       })
     else
       health.ok("auto_reload enabled and 'autoread' is set.")

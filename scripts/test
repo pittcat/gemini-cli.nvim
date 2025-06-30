@@ -1,5 +1,5 @@
 #!/bin/env bash
 
-curl -LsSf https://aider.chat/install.sh | sh
+curl -LsSf https://gemini-cli.chat/install.sh | sh
 
 nvim -l tests/minit.lua --minitest

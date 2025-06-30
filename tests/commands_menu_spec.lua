@@ -10,8 +10,8 @@ describe("Commands Menu", function()
   local mock_picker_instance
 
   before_each(function()
-    package.loaded["nvim_aider.commands_menu"] = nil
-    package.loaded["nvim_aider.api"] = nil
+    package.loaded["gemini_cli.commands_menu"] = nil
+    package.loaded["gemini_cli.api"] = nil
 
     -- Mock API module
     api_mock = {
@@ -22,15 +22,13 @@ describe("Commands Menu", function()
       send_buffer_with_prompt = stub.new(),
       add_current_file = stub.new(),
       add_read_only_file = stub.new(),
-      drop_current_file = stub.new(),
-      reset_session = stub.new(), -- Add mock for reset
     }
 
-    package.loaded["nvim_aider.api"] = api_mock
-    commands_menu = require("nvim_aider.commands_menu")
+    package.loaded["gemini_cli.api"] = api_mock
+    commands_menu = require("gemini_cli.commands_menu")
 
     -- Mock picker and notifications
-    picker_mock = mock(require("nvim_aider.picker"), true)
+    picker_mock = mock(require("gemini_cli.picker"), true)
     mock_picker_instance = { close = spy.new() }
     picker_mock.create.returns(mock_picker_instance)
     notify_spy = spy.on(vim, "notify")
@@ -38,8 +36,8 @@ describe("Commands Menu", function()
 
   after_each(function()
     mock.revert(picker_mock)
-    package.loaded["nvim_aider.commands_menu"] = nil
-    package.loaded["nvim_aider.api"] = nil
+    package.loaded["gemini_cli.commands_menu"] = nil
+    package.loaded["gemini_cli.api"] = nil
   end)
 
   describe("Command Registration", function()
@@ -47,12 +45,8 @@ describe("Commands Menu", function()
       local expected = {
         "health",
         "toggle",
-        "send",
-        "command",
-        "buffer",
-        "add",
-        "drop",
-        "reset", -- Check for reset
+        "ask",
+        "add_file",
       }
       -- Check that the keys match regardless of order
       local expected_set = {}
@@ -67,10 +61,6 @@ describe("Commands Menu", function()
 
       assert.same(expected_set, actual_set)
     end)
-
-    it("should have add subcommands", function()
-      assert.truthy(commands_menu.commands.add.subcommands.readonly)
-    end)
   end)
 
   describe("Command Execution", function()
@@ -80,45 +70,30 @@ describe("Commands Menu", function()
 
       commands_menu._load_command({ "toggle" })
       assert.stub(api_mock.toggle_terminal).was_called()
-
-      commands_menu._load_command({ "reset" }) -- Test reset execution
-      assert.stub(api_mock.reset_session).was_called()
-    end)
-
-    it("should execute subcommands", function()
-      commands_menu._load_command({ "add", "readonly" })
-      assert.stub(api_mock.add_read_only_file).was_called()
     end)
 
     it("should handle invalid commands", function()
       commands_menu._load_command({ "invalid_command" })
-      assert.spy(notify_spy).was_called_with("Invalid Aider command: invalid_command", vim.log.levels.INFO)
-    end)
-
-    it("should handle invalid subcommands", function()
-      commands_menu._load_command({ "add", "invalid_sub" })
-      assert
-        .spy(notify_spy)
-        .was_called_with("Invalid Aider subcommand: invalid_sub for command: add", vim.log.levels.INFO)
+      assert.spy(notify_spy).was_called_with("Invalid GeminiCLI command: invalid_command", vim.log.levels.INFO)
     end)
   end)
 
   describe("Input Handling", function()
-    it("should handle send command with input", function()
+    it("should handle ask command with input", function()
       stub(vim.ui, "input", function(_, cb)
         cb("test input")
       end)
 
-      commands_menu._load_command({ "send", "test input" })
+      commands_menu._load_command({ "ask", "test input" })
       assert.stub(api_mock.send_to_terminal).was_called_with("test input")
     end)
 
-    it("should handle empty send input", function()
+    it("should handle empty ask input", function()
       stub(vim.ui, "input", function(_, cb)
         cb("")
       end)
 
-      commands_menu._load_command({ "send" })
+      commands_menu._load_command({ "ask" })
       assert.stub(api_mock.send_to_terminal).was_called_with(nil)
     end)
   end)
@@ -128,7 +103,7 @@ describe("Commands Menu", function()
     local commands_menu
 
     before_each(function()
-      commands_menu = require("nvim_aider.commands_menu")
+      commands_menu = require("gemini_cli.commands_menu")
 
       -- Mock snacks.picker
       package.loaded["snacks.picker"] = function(opts)
@@ -144,7 +119,7 @@ describe("Commands Menu", function()
     end)
 
     it("contains all top-level commands", function()
-      local expected = { "health", "toggle", "send", "command", "buffer", "add", "drop", "reset" } -- Add reset
+      local expected = { "health", "toggle", "ask", "add_file" }
       local found = {}
       for _, item in ipairs(menu_items) do
         if not item.parent then
@@ -155,17 +130,6 @@ describe("Commands Menu", function()
       table.sort(expected)
       table.sort(found)
       assert.same(expected, found)
-    end)
-
-    it("contains subcommands", function()
-      local found_sub = false
-      for _, item in ipairs(menu_items) do
-        if item.text == "add readonly" then
-          found_sub = true
-          break
-        end
-      end
-      assert.is_true(found_sub)
     end)
   end)
 end)

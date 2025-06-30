@@ -1,6 +1,6 @@
-# [![aider](https://avatars.githubusercontent.com/u/172139148?s=20&v=4)](https://aider.chat) nvim-aider
+# [![gemini-cli](https://avatars.githubusercontent.com/u/172139148?s=20&v=4)](https://gemini-cli.chat) nvim-gemini-cli
 
-🤖 Seamlessly integrate Aider with Neovim for an enhanced AI-assisted coding experience!
+🤖 Seamlessly integrate GeminiCLI with Neovim for an enhanced AI-assisted coding experience!
 
 <img width="1280" alt="screenshot_1" src="https://github.com/user-attachments/assets/5d779f73-5441-4d24-8cce-e6dfdc5bf787" />
 <img width="1280" alt="screenshot_2" src="https://github.com/user-attachments/assets/3c122846-ca27-42d3-8cbf-f6e5f9b10f69" />
@@ -10,55 +10,46 @@
 
 ## 🌟 Features
 
-- [x] 🖥️ Aider terminal integration within Neovim
+- [x] 🖥️ GeminiCLI terminal integration within Neovim
 - [x] 🎨 Color theme configuration support with auto Catppuccin flavor synchronization
       if available
-- [x] 📤 Quick commands to add/drop current buffer files
-- [x] 📤 Send buffers or selections to Aider
-- [x] ♻️ Reset command to clear session
+- [x] 📤 Quick commands to add current buffer files (using `@` syntax)
+- [x] 📤 Send buffers or selections to GeminiCLI
+- [ ] ♻️ Reset command to clear session (not directly supported by Gemini CLI)
 - [x] 💬 Optional user prompt for buffer and selection sends
-- [x] 🩺 Send current buffer diagnostics to Aider
-- [x] 🔍 Aider command selection UI with fuzzy search and input prompt
-- [x] 🔌 Fully documented [Lua API](lua/nvim_aider/api.lua) for
+- [x] 🩺 Send current buffer diagnostics to GeminiCLI
+- [x] 🔍 GeminiCLI command selection UI with fuzzy search and input prompt
+- [x] 🔌 Fully documented [Lua API](lua/gemini_cli/api.lua) for
       programmatic interaction and custom integrations
 - [x] 🔄 Auto-reload buffers on external changes (requires 'autoread')
 
-## 🧩 Integrations
-
-- [x] 🌲➕ [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) offers rich context management for Aider, including files, directories, and multi-selection
-- [x] 🔖 [bookmarks.nvim](https://github.com/LintaoAmons/bookmarks.nvim) enables adding (optionally as read-only) or dropping files from Aider using saved bookmarks
-- [x] 🌳 [nvim-tree.lua](https://github.com/nvim-tree/nvim-tree.lua) enables adding or dropping individual files to Aider directly from its tree interface
-
 ## 🎮 Commands
 
-- `:Aider` - Open interactive command menu
+- `:GeminiCLI` - Open interactive command menu
 
   ```text
   Commands:
   health         🩺 Check plugin health status
-  toggle         🎛️ Toggle Aider terminal window
-  send           📤 Send text to Aider (prompt if empty)
+  toggle         🎛️ Toggle GeminiCLI terminal window
+  send           📤 Send text to GeminiCLI (prompt if empty)
   command        ⌨️ Show slash commands
   buffer         📄 Send current buffer
    > diagnostics 🩺 Send current buffer diagnostics
-  add            ➕ Add file to session
-   > readonly    👀 Add as read-only reference
-  drop           🗑️ Remove file from session
-  reset          ♻️ Drop all files and clear chat history
+  add_file       ➕ Add current file to session (using `@` syntax)
+  ask            ❓ Ask a question
   ```
 
 - ⚡ Direct command execution examples:
 
   ```vim
-  :Aider health
-  :Aider add readonly
-  :Aider send "Fix login validation"
-  :Aider reset
+  :GeminiCLI health
+  :GeminiCLI add_file
+  :GeminiCLI send "Fix login validation"
   ```
 
 ## 🔗 Requirements
 
-🐍 Python: Install `aider-chat`
+🐍 Python: Install `gemini-cli-chat`
 📋 System: **Neovim** >= 0.9.4, ~~Working clipboard~~ thanks to @milanglacier
 🌙 Lua: `folke/snacks.nvim`,
 _optionals_ `catppuccin/nvim`, `nvim-neo-tree/neo-tree.nvim`, `nvim-tree.lua`
@@ -69,64 +60,46 @@ Using lazy.nvim:
 
 ```lua
 {
-    "GeorgesAlkhouri/nvim-aider",
-    cmd = "Aider",
+    "GeorgesAlkhouri/nvim-gemini-cli",
+    cmd = "GeminiCLI",
     -- Example key mappings for common actions:
     keys = {
-      { "<leader>a/", "<cmd>Aider toggle<cr>", desc = "Toggle Aider" },
-      { "<leader>as", "<cmd>Aider send<cr>", desc = "Send to Aider", mode = { "n", "v" } },
-      { "<leader>ac", "<cmd>Aider command<cr>", desc = "Aider Commands" },
-      { "<leader>ab", "<cmd>Aider buffer<cr>", desc = "Send Buffer" },
-      { "<leader>a+", "<cmd>Aider add<cr>", desc = "Add File" },
-      { "<leader>a-", "<cmd>Aider drop<cr>", desc = "Drop File" },
-      { "<leader>ar", "<cmd>Aider add readonly<cr>", desc = "Add Read-Only" },
-      { "<leader>aR", "<cmd>Aider reset<cr>", desc = "Reset Session" },
+      { "<leader>a/", "<cmd>GeminiCLI toggle<cr>", desc = "Toggle GeminiCLI" },
+      { "<leader>as", "<cmd>GeminiCLI send<cr>", desc = "Send to GeminiCLI", mode = { "n", "v" } },
+      { "<leader>ac", "<cmd>GeminiCLI command<cr>", desc = "GeminiCLI Commands" },
+      { "<leader>ab", "<cmd>GeminiCLI buffer<cr>", desc = "Send Buffer" },
+      { "<leader>a+", "<cmd>GeminiCLI add_file<cr>", desc = "Add File" },
       -- Example nvim-tree.lua integration if needed
-      { "<leader>a+", "<cmd>AiderTreeAddFile<cr>", desc = "Add File from Tree to Aider", ft = "NvimTree" },
-      { "<leader>a-", "<cmd>AiderTreeDropFile<cr>", desc = "Drop File from Tree from Aider", ft = "NvimTree" },
+      
     },
     dependencies = {
       "folke/snacks.nvim",
       --- The below dependencies are optional
       "catppuccin/nvim",
-      "nvim-tree/nvim-tree.lua",
-      --- Neo-tree integration
-      {
-        "nvim-neo-tree/neo-tree.nvim",
-        opts = function(_, opts)
-          -- Example mapping configuration (already set by default)
-          -- opts.window = {
-          --   mappings = {
-          --     ["+"] = { "nvim_aider_add", desc = "add to aider" },
-          --     ["-"] = { "nvim_aider_drop", desc = "drop from aider" }
-          --     ["="] = { "nvim_aider_add_read_only", desc = "add read-only to aider" }
-          --   }
-          -- }
-          require("nvim_aider.neo_tree").setup(opts)
-        end,
-      },
+      
+      
     },
     config = true,
   }
 ```
 
-After installing, run `:Aider health` to check if everything is set up correctly.
+After installing, run `:GeminiCLI health` to check if everything is set up correctly.
 
 ## ⚙️ Configuration
 
 There is no need to call setup if you don't want to change the default options.
 
 ```lua
-require("nvim_aider").setup({
-  -- Command that executes Aider
-  aider_cmd = "aider",
-  -- Command line arguments passed to aider
+require("gemini_cli").setup({
+  -- Command that executes GeminiCLI
+  gemini_cmd = "gemini",
+  -- Command line arguments passed to gemini-cli
   args = {
     "--no-auto-commits",
     "--pretty",
     "--stream",
   },
-  -- Automatically reload buffers changed by Aider (requires vim.o.autoread = true)
+  -- Automatically reload buffers changed by GeminiCLI (requires vim.o.autoread = true)
   auto_reload = false,
   -- Theme colors (automatically uses Catppuccin flavor if available)
   theme = {
@@ -150,8 +123,8 @@ require("nvim_aider").setup({
     gui = { nerdFontsVersion = "3" },
   },
   win = {
-    wo = { winbar = "Aider" },
-    style = "nvim_aider",
+    wo = { winbar = "GeminiCLI" },
+    style = "gemini_cli",
     position = "right",
   },
 })
@@ -159,12 +132,12 @@ require("nvim_aider").setup({
 
 ## 📚 API Reference
 
-The plugin provides a structured API for programmatic integration. Access via `require("nvim_aider").api`
+The plugin provides a structured API for programmatic integration. Access via `require("gemini_cli").api`
 
 ### Core Functions
 
 ```lua
-local api = require("nvim_aider").api
+local api = require("gemini_cli").api
 ```
 
 #### `health_check()`
@@ -177,7 +150,7 @@ api.health_check()
 
 #### `toggle_terminal(opts?)`
 
-Toggle Aider terminal window
+Toggle GeminiCLI terminal window
 
 ```lua
 api.toggle_terminal()
@@ -189,7 +162,7 @@ api.toggle_terminal()
 
 #### `send_to_terminal(text, opts?)`
 
-Send raw text directly to Aider
+Send raw text directly to GeminiCLI
 
 ```lua
 api.send_to_terminal("Fix the login validation")
@@ -197,7 +170,7 @@ api.send_to_terminal("Fix the login validation")
 
 #### `send_command(command, input?, opts?)`
 
-Execute specific Aider command
+Execute specific GeminiCLI command
 
 ```lua
 api.send_command("/commit", "Add error handling")
@@ -301,13 +274,13 @@ end)
 
 ---
 
-## 🧩 Other Aider Neovim plugins
+## 🧩 Other GeminiCLI Neovim plugins
 
-- [aider.nvim](https://github.com/joshuavial/aider.nvim)
-- [aider.vim](https://github.com/nekowasabi/aider.vim)
+- [gemini-cli.nvim](https://github.com/joshuavial/gemini-cli.nvim)
+- [gemini-cli.vim](https://github.com/nekowasabi/gemini-cli.vim)
 
 ---
 
 <div align="center">
-Made with 🤖 using <a href="https://github.com/paul-gauthier/aider">Aider</a>
+Made with 🤖 using <a href="https://github.com/paul-gauthier/gemini-cli">GeminiCLI</a>
 </div>
