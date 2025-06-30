@@ -125,7 +125,6 @@ function M.add_current_file(opts)
   end
 end
 
-
 ---Open command picker
 ---@param opts? table Optional configuration override
 ---@param callback? function Custom callback handler
@@ -145,3 +144,4 @@ function M.open_command_picker(opts, callback)
 end
 
 return M
+

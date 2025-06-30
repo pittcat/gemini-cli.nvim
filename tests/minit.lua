@@ -26,7 +26,7 @@ require("lazy.minit").setup({
         { "<leader>as", "<cmd>Gemini send<cr>", desc = "Send to Gemini", mode = { "n", "v" } },
         { "<leader>ac", "<cmd>Gemini command<cr>", desc = "Send Command To Gemini" },
         { "<leader>ab", "<cmd>Gemini buffer<cr>", desc = "Send Buffer To Gemini" },
-        { "<leader>a+", "<cmd>Gemini add_file<cr>", desc = "Add File to Gemini" },
+        { "<leader>af", "<cmd>Gemini add_file<cr>", desc = "Add File to Gemini" },
       },
       dependencies = {
         "folke/snacks.nvim",

@@ -33,7 +33,7 @@ function M._load_command(args)
     table.remove(args, 1)
     commands[cmd].impl(unpack(args))
   else
-    vim.notify("Invalid GeminiCLI command: " .. (cmd or ""), vim.log.levels.INFO)
+    vim.notify("Invalid Gemini command: " .. (cmd or ""), vim.log.levels.INFO)
   end
 end
 
@@ -86,3 +86,4 @@ end
 M.commands = commands
 
 return M
+
