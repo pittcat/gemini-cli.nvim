@@ -60,7 +60,7 @@ Using lazy.nvim:
 
 ```lua
 {
-    "GeorgesAlkhouri/nvim-gemini-cli",
+    "marcinjahn/gemini-cli.nvim",
     cmd = "GeminiCLI",
     -- Example key mappings for common actions:
     keys = {
@@ -70,14 +70,14 @@ Using lazy.nvim:
       { "<leader>ab", "<cmd>GeminiCLI buffer<cr>", desc = "Send Buffer" },
       { "<leader>a+", "<cmd>GeminiCLI add_file<cr>", desc = "Add File" },
       -- Example nvim-tree.lua integration if needed
-      
+
     },
     dependencies = {
       "folke/snacks.nvim",
       --- The below dependencies are optional
       "catppuccin/nvim",
-      
-      
+
+
     },
     config = true,
   }
