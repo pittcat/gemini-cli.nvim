@@ -92,9 +92,6 @@ require("gemini_cli").setup({
   gemini_cmd = "gemini",
   -- Command line arguments passed to gemini-cli
   args = {
-    "--no-auto-commits",
-    "--pretty",
-    "--stream",
   },
   -- Automatically reload buffers changed by GeminiCLI (requires vim.o.autoread = true)
   auto_reload = false,

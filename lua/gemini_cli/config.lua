@@ -8,7 +8,7 @@ local M = {}
 
 M.defaults = {
   auto_reload = false,
-  gemini_cmd = "gemini-cli",
+  gemini_cmd = "gemini",
   args = {},
   config = {
     os = { editPreset = "nvim-remote" },

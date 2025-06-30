@@ -13,7 +13,7 @@ function M.check()
     -- Try parsing version (might fail if format is unexpected)
     local ok, version = pcall(vim.version.parse, version_str)
     if ok and version then
-      health.ok(string.format("gemini-cli v%d.%d.%d found", version.major, version.minor, version.patch))
+      health.ok(string.format("gemini v%d.%d.%d found", version.major, version.minor, version.patch))
     else
       health.warn("Could not parse gemini-cli version from output: " .. version_str)
     end

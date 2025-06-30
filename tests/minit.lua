@@ -16,29 +16,20 @@ require("lazy.minit").setup({
     { dir = vim.uv.cwd() },
     "LazyVim/starter",
     {
-      "GeorgesAlkhouri/nvim-gemini-cli",
+      "marcinjahn/gemini-cli.nvim",
       cmd = {
         "GeminiTerminalToggle",
         "GeminiHealth",
       },
       keys = {
-        { "<leader>a/", "<cmd>GeminiCLI toggle<cr>", desc = "Open GeminiCLI" },
-        { "<leader>as", "<cmd>GeminiCLI send<cr>", desc = "Send to GeminiCLI", mode = { "n", "v" } },
-        { "<leader>ac", "<cmd>GeminiCLI command<cr>", desc = "Send Command To GeminiCLI" },
-        { "<leader>ab", "<cmd>GeminiCLI buffer<cr>", desc = "Send Buffer To GeminiCLI" },
-        { "<leader>a+", "<cmd>GeminiCLI add_file<cr>", desc = "Add File to GeminiCLI" },
+        { "<leader>a/", "<cmd>Gemini toggle<cr>", desc = "Open Gemini" },
+        { "<leader>as", "<cmd>Gemini send<cr>", desc = "Send to Gemini", mode = { "n", "v" } },
+        { "<leader>ac", "<cmd>Gemini command<cr>", desc = "Send Command To Gemini" },
+        { "<leader>ab", "<cmd>Gemini buffer<cr>", desc = "Send Buffer To Gemini" },
+        { "<leader>a+", "<cmd>Gemini add_file<cr>", desc = "Add File to Gemini" },
       },
       dependencies = {
         "folke/snacks.nvim",
-        --- The below dependencies are optional
-        "catppuccin/nvim",
-        "nvim-tree/nvim-tree.lua",
-        {
-          "nvim-neo-tree/neo-tree.nvim",
-          opts = function(_, opts)
-            require("gemini_cli.neo_tree").setup(opts)
-          end,
-        },
       },
       config = true,
     },
