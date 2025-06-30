@@ -22,6 +22,8 @@ local commands = {
     value = COMMAND_PREFIX .. "restore",
     description = "Restores project files to a state before a tool execution (requires --checkpointing)",
     category = "input", -- Can take tool_call_id
+  },
 }
 
 return commands
+
