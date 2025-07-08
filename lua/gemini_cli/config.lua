@@ -4,12 +4,14 @@
 ---@field args? string[]
 ---@field win? snacks.win.Config
 ---@field picker_cfg? snacks.picker.layout.Config
+---@field fix_display_flicker? boolean Fix terminal window switching flicker (default: true)
 local M = {}
 
 M.defaults = {
   auto_reload = false,
   gemini_cmd = "gemini",
   args = {},
+  fix_display_flicker = true,
   config = {
     os = { editPreset = "nvim-remote" },
     gui = { nerdFontsVersion = "3" },

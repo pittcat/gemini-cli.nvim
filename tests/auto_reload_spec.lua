@@ -117,8 +117,8 @@ describe("Auto Reload Feature", function()
     assert.is_not_nil(calls[1], "notify_once should have been called")
     assert.is_not_nil(calls[1].vals, "notify_once call should have values")
     assert.is_not_nil(calls[1].vals[1], "notify_once message should not be nil")
-    -- Use string.find to match the literal start of the message, including non-breaking hyphens
-    local expected_start = "    local expected_start = "nvim‑gemini-cli: auto‑reload disabled"" -- NOTE: These are non-breaking hyphens
+    -- Use string.find to match the literal start of the message
+    local expected_start = "gemini-cli: auto-reload disabled"
     assert.truthy(
       string.find(calls[1].vals[1], expected_start, 1, true), -- Use plain find for literal match
       "Notification message did not match expected start. Got: " .. tostring(calls[1].vals[1])
