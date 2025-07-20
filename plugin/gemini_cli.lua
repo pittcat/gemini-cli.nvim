@@ -108,3 +108,56 @@ vim.api.nvim_create_user_command("GeminiQuickReadOnlyFile",
   end),
   { desc = "Add current file as read-only to Gemini session" }
 )
+
+-- Debug Commands
+vim.api.nvim_create_user_command("GeminiDebug", function(opts)
+  local gemini = require("gemini_cli")
+  local action = opts.fargs[1]
+  
+  if not action then
+    gemini.debug.status()
+    return
+  end
+  
+  if action == "enable" then
+    gemini.debug.enable()
+  elseif action == "disable" then
+    gemini.debug.disable()
+  elseif action == "status" then
+    gemini.debug.status()
+  elseif action == "clear" then
+    gemini.debug.clear_log()
+  elseif action == "open" then
+    gemini.debug.open_log()
+  elseif action == "level" then
+    local level = opts.fargs[2]
+    if level then
+      gemini.debug.set_level(level:upper())
+    else
+      vim.notify("Usage: :GeminiDebug level <DEBUG|INFO|WARN|ERROR>", vim.log.levels.ERROR)
+    end
+  else
+    vim.notify("Unknown debug action: " .. action, vim.log.levels.ERROR)
+    vim.notify("Available actions: enable, disable, status, clear, open, level", vim.log.levels.INFO)
+  end
+end, {
+  nargs = "*",
+  desc = "Debug utilities for GeminiCLI",
+  complete = function(arg_lead, line)
+    local actions = {"enable", "disable", "status", "clear", "open", "level"}
+    local parts = vim.split(line:gsub("%s+", " "), " ")
+    
+    if #parts == 2 then
+      return vim.tbl_filter(function(action)
+        return action:find(arg_lead) == 1
+      end, actions)
+    elseif #parts == 3 and parts[2] == "level" then
+      local levels = {"DEBUG", "INFO", "WARN", "ERROR"}
+      return vim.tbl_filter(function(level)
+        return level:find(arg_lead:upper()) == 1
+      end, levels)
+    end
+    
+    return {}
+  end
+})

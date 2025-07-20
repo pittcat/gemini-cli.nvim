@@ -25,6 +25,51 @@ local commands = {
       require("gemini_cli.api").add_current_file()
     end,
   },
+  debug = {
+    doc = "Debug utilities",
+    subcommands = {
+      enable = {
+        doc = "Enable debug logging",
+        impl = function()
+          require("gemini_cli").debug.enable()
+        end,
+      },
+      disable = {
+        doc = "Disable debug logging", 
+        impl = function()
+          require("gemini_cli").debug.disable()
+        end,
+      },
+      status = {
+        doc = "Show debug status",
+        impl = function()
+          require("gemini_cli").debug.status()
+        end,
+      },
+      clear = {
+        doc = "Clear debug log",
+        impl = function()
+          require("gemini_cli").debug.clear_log()
+        end,
+      },
+      open = {
+        doc = "Open debug log file",
+        impl = function()
+          require("gemini_cli").debug.open_log()
+        end,
+      },
+      level = {
+        doc = "Set debug level (DEBUG|INFO|WARN|ERROR)",
+        impl = function(input)
+          if input and input ~= "" then
+            require("gemini_cli").debug.set_level(input:upper())
+          else
+            vim.notify("Usage: :Gemini debug level <DEBUG|INFO|WARN|ERROR>", vim.log.levels.ERROR)
+          end
+        end,
+      },
+    },
+  },
 }
 
 function M._load_command(args)

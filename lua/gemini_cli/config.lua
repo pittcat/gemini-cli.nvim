@@ -5,6 +5,11 @@
 ---@field win? snacks.win.Config
 ---@field picker_cfg? snacks.picker.layout.Config
 ---@field fix_display_flicker? boolean Fix terminal window switching flicker (default: true)
+---@field debug? table Debug configuration
+---@field debug.enabled? boolean Enable debug logging (default: false)
+---@field debug.level? string Debug level: "DEBUG", "INFO", "WARN", "ERROR" (default: "INFO")
+---@field debug.file? string Debug log file path (default: cache/gemini_cli_debug.log)
+---@field debug.notify? boolean Show debug notifications (default: false)
 local M = {}
 
 M.defaults = {
@@ -23,6 +28,12 @@ M.defaults = {
   },
   picker_cfg = {
     preset = "vscode",
+  },
+  debug = {
+    enabled = false,
+    level = "INFO",
+    file = vim.fn.stdpath("cache") .. "/gemini_cli_debug.log",
+    notify = false,
   },
 }
 
