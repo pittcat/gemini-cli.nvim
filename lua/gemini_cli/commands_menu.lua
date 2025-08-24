@@ -13,6 +13,12 @@ local commands = {
       require("gemini_cli.api").toggle_terminal()
     end,
   },
+  yolo = {
+    doc = "Toggle GeminiCLI terminal in YOLO mode",
+    impl = function()
+      require("gemini_cli.api").toggle_terminal_yolo()
+    end,
+  },
   ask = {
     doc = "Ask a question",
     impl = function(input)
@@ -35,7 +41,7 @@ local commands = {
         end,
       },
       disable = {
-        doc = "Disable debug logging", 
+        doc = "Disable debug logging",
         impl = function()
           require("gemini_cli").debug.disable()
         end,
@@ -131,4 +137,3 @@ end
 M.commands = commands
 
 return M
-

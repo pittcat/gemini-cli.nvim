@@ -2,6 +2,7 @@
 ---@field auto_reload? boolean Automatically reload buffers changed by GeminiCLI (requires vim.o.autoread = true)
 ---@field gemini_cmd? string
 ---@field args? string[]
+---@field yolo? boolean Enable yolo mode (adds --yolo flag to gemini command)
 ---@field win? snacks.win.Config
 ---@field picker_cfg? snacks.picker.layout.Config
 ---@field fix_display_flicker? boolean Fix terminal window switching flicker (default: true)
@@ -16,6 +17,7 @@ M.defaults = {
   auto_reload = false,
   gemini_cmd = "gemini",
   args = {},
+  yolo = false,
   fix_display_flicker = true,
   config = {
     os = { editPreset = "nvim-remote" },

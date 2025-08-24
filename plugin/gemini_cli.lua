@@ -70,6 +70,10 @@ vim.api.nvim_create_user_command(
   { desc = "Toggle Gemini terminal" }
 )
 
+vim.api.nvim_create_user_command("GeminiYolo", function()
+  require("gemini_cli.api").toggle_terminal_yolo()
+end, { desc = "Toggle Gemini terminal in YOLO mode" })
+
 vim.api.nvim_create_user_command(
   "GeminiTerminalSend",
   create_deprecated_handler("GeminiTerminalSend", "Gemini send", function(args)
@@ -102,7 +106,8 @@ vim.api.nvim_create_user_command(
   { desc = "Add current file to Gemini session" }
 )
 
-vim.api.nvim_create_user_command("GeminiQuickReadOnlyFile",
+vim.api.nvim_create_user_command(
+  "GeminiQuickReadOnlyFile",
   create_deprecated_handler("GeminiQuickReadOnlyFile", "Gemini add readonly", function()
     require("gemini_cli.api").add_read_only_file()
   end),
@@ -113,12 +118,12 @@ vim.api.nvim_create_user_command("GeminiQuickReadOnlyFile",
 vim.api.nvim_create_user_command("GeminiDebug", function(opts)
   local gemini = require("gemini_cli")
   local action = opts.fargs[1]
-  
+
   if not action then
     gemini.debug.status()
     return
   end
-  
+
   if action == "enable" then
     gemini.debug.enable()
   elseif action == "disable" then
@@ -144,20 +149,20 @@ end, {
   nargs = "*",
   desc = "Debug utilities for GeminiCLI",
   complete = function(arg_lead, line)
-    local actions = {"enable", "disable", "status", "clear", "open", "level"}
+    local actions = { "enable", "disable", "status", "clear", "open", "level" }
     local parts = vim.split(line:gsub("%s+", " "), " ")
-    
+
     if #parts == 2 then
       return vim.tbl_filter(function(action)
         return action:find(arg_lead) == 1
       end, actions)
     elseif #parts == 3 and parts[2] == "level" then
-      local levels = {"DEBUG", "INFO", "WARN", "ERROR"}
+      local levels = { "DEBUG", "INFO", "WARN", "ERROR" }
       return vim.tbl_filter(function(level)
         return level:find(arg_lead:upper()) == 1
       end, levels)
     end
-    
+
     return {}
-  end
+  end,
 })

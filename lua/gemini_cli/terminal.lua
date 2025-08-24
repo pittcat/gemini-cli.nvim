@@ -8,6 +8,13 @@ local logger = require("gemini_cli.logger")
 ---@return string
 local function create_cmd(opts)
   local cmd = { opts.gemini_cmd }
+
+  -- Add yolo flag if enabled
+  if opts.yolo then
+    table.insert(cmd, "--yolo")
+  end
+
+  -- Add any additional args
   vim.list_extend(cmd, opts.args or {})
   return table.concat(cmd, " ")
 end
@@ -98,7 +105,7 @@ function M.send(text, opts, multi_line)
     text_length = text and #text or 0,
     text_preview = text and text:sub(1, 100) or "nil",
     multi_line = multi_line,
-    opts = opts
+    opts = opts,
   })
 
   multi_line = multi_line == nil and true or multi_line
@@ -106,7 +113,7 @@ function M.send(text, opts, multi_line)
 
   logger.debug("M.send configuration", {
     final_multi_line = multi_line,
-    merged_opts = opts
+    merged_opts = opts,
   })
 
   local cmd = create_cmd(opts)
@@ -121,7 +128,7 @@ function M.send(text, opts, multi_line)
 
   logger.debug("M.send terminal instance found", {
     term_exists = term ~= nil,
-    buf_valid = term and term:buf_valid() or false
+    buf_valid = term and term:buf_valid() or false,
   })
 
   -- Setup anti-flicker events if not already done
@@ -131,7 +138,7 @@ function M.send(text, opts, multi_line)
 
   if term and term:buf_valid() then
     logger.debug("M.send attempting to get terminal job id", { buf = term.buf })
-    
+
     local success, chan = pcall(vim.api.nvim_buf_get_var, term.buf, "terminal_job_id")
     if not success then
       logger.error("M.send failed to get terminal_job_id", { error = chan, buf = term.buf })
@@ -148,22 +155,22 @@ function M.send(text, opts, multi_line)
         local bracket_start = "\27[200~"
         local bracket_end = "\27[201~\r"
         local bracketed_text = bracket_start .. text .. bracket_end
-        
+
         logger.debug("M.send sending multi-line text", {
           bracketed_length = #bracketed_text,
           original_length = #text,
-          chan = chan
+          chan = chan,
         })
 
         send_success, send_error = pcall(vim.api.nvim_chan_send, chan, bracketed_text)
       else
         text = text:gsub("\n", " ") .. "\n"
-        
+
         logger.debug("M.send sending single-line text", {
           processed_length = #text,
           chan = chan,
           text_content = text,
-          text_bytes = string.format("bytes: %s", table.concat({string.byte(text, 1, -1)}, ", "))
+          text_bytes = string.format("bytes: %s", table.concat({ string.byte(text, 1, -1) }, ", ")),
         })
 
         send_success, send_error = pcall(vim.api.nvim_chan_send, chan, text)
@@ -173,13 +180,13 @@ function M.send(text, opts, multi_line)
         logger.info("M.send text sent successfully", {
           text_length = #text,
           multi_line = multi_line,
-          chan = chan
+          chan = chan,
         })
       else
         logger.error("M.send failed to send text", {
           error = send_error,
           chan = chan,
-          text_length = #text
+          text_length = #text,
         })
         vim.notify("Failed to send text to terminal: " .. tostring(send_error), vim.log.levels.ERROR)
       end
@@ -190,7 +197,7 @@ function M.send(text, opts, multi_line)
   else
     logger.error("M.send terminal buffer invalid", {
       term_exists = term ~= nil,
-      buf_valid = term and term:buf_valid() or false
+      buf_valid = term and term:buf_valid() or false,
     })
     vim.notify("Please open a GeminiCLI terminal first.", vim.log.levels.INFO)
   end
@@ -208,7 +215,7 @@ function M.command(command, text, opts)
     command = command,
     text = text,
     full_command = full_command,
-    multi_line = false
+    multi_line = false,
   })
 
   -- NOTE: For GeminiCLI commands that shouldn't get a newline (e.g. `/help`)
