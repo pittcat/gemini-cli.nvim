@@ -27,9 +27,10 @@ describe("Command Setup", function()
     end
   end)
 
-
   it("executes health check without error", function()
-    local health_check_ok = pcall(function() gemini_cli.api.health_check() end)
+    local health_check_ok = pcall(function()
+      gemini_cli.api.health_check()
+    end)
     assert(health_check_ok, "health_check() should execute without error")
   end)
 end)

@@ -26,4 +26,3 @@ local commands = {
 }
 
 return commands
-
