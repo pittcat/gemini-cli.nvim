@@ -98,6 +98,8 @@ require("gemini_cli").setup({
   },
   -- Automatically reload buffers changed by GeminiCLI (requires vim.o.autoread = true)
   auto_reload = false,
+  -- Automatically enter insert mode when switching to terminal (default: false)
+  auto_insert_mode = false,
   -- Debug configuration
   debug = {
     enabled = false,  -- Enable debug logging

@@ -85,6 +85,10 @@ function M.toggle(opts)
 
   opts = vim.tbl_deep_extend("force", config.options, opts or {})
 
+  -- Set start_insert and auto_insert based on auto_insert_mode config
+  opts.start_insert = opts.auto_insert_mode
+  opts.auto_insert = opts.auto_insert_mode
+
   local cmd = create_cmd(opts)
   local term = snacks.toggle(cmd, opts)
 
@@ -118,6 +122,10 @@ function M.send(text, opts, multi_line)
 
   local cmd = create_cmd(opts)
   logger.debug("M.send command created", { cmd = cmd })
+
+  -- Set start_insert and auto_insert based on auto_insert_mode config for consistency
+  opts.start_insert = opts.auto_insert_mode
+  opts.auto_insert = opts.auto_insert_mode
 
   local term = require("snacks.terminal").get(cmd, opts)
   if not term then

@@ -6,6 +6,7 @@
 ---@field win? snacks.win.Config
 ---@field picker_cfg? snacks.picker.layout.Config
 ---@field fix_display_flicker? boolean Fix terminal window switching flicker (default: true)
+---@field auto_insert_mode? boolean Automatically enter insert mode when switching to terminal (default: false)
 ---@field debug? table Debug configuration
 ---@field debug.enabled? boolean Enable debug logging (default: false)
 ---@field debug.level? string Debug level: "DEBUG", "INFO", "WARN", "ERROR" (default: "INFO")
@@ -19,6 +20,7 @@ M.defaults = {
   args = {},
   yolo = false,
   fix_display_flicker = true,
+  auto_insert_mode = false,
   config = {
     os = { editPreset = "nvim-remote" },
     gui = { nerdFontsVersion = "3" },
